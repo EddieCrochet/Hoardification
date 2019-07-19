@@ -66,8 +66,9 @@ namespace SPCollege.Pages.Students
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException /* ex */)
             {
+                //To log the error uncomment the ex and write the log
                 return RedirectToAction("./Delete",
                     new { id = id, saveChangesError = true });
             }
