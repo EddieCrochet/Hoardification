@@ -11,6 +11,18 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+<form sp-page="./index" method="get">
+<div class="form-actions no-color">
+    <p>
+        Find By Name:
+        <input type="text" name="SearchString" value="@Model.CurrentFilter"/>
+        <input type="Submit" value="Search" class="btn btn-default"/> |
+        <a asp-page="./index">Back To Full List</a>
+    </p>
+</div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
