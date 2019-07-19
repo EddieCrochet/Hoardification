@@ -21,19 +21,27 @@ namespace SPCollege.Pages.Students
 
         [BindProperty]
         public Student Student { get; set; }
+        public string ErrorMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Student = await _context.Students.FirstOrDefaultAsync(m => m.ID == id);
+            Student = await _context.Students
+                .AsNoTracking().
+                FirstOrDefaultAsync(m => m.ID == id);
 
             if (Student == null)
             {
                 return NotFound();
+            }
+            if(saveChangesError.GetValueOrDefault())
+            {
+                //components that show us our delete has failed
+                ErrorMessage = "Delete failed. Try again";
             }
             return Page();
         }
