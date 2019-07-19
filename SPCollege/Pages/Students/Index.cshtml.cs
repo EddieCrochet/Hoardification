@@ -26,13 +26,21 @@ namespace SPCollege.Pages.Students
 
         public IList<Student> Student { get;set; }
 
-        public async Task OnGetAsync(string sortOrder)
+        public async Task OnGetAsync(string sortOrder, string searchString)
         {
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             DateSort = sortOrder == "Date" ? "date_desc" : "Date";
+            CurrentFilter = searchString;
 
             IQueryable<Student> studentIQ = from s in _context.Students
                                             select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                //if the search string is not empty we will list the results as such
+                studentIQ = studentIQ.Where(s => s.LastName.Contains(searchString)
+                || s.FirstName.Contains(searchString));
+            }
 
             switch (sortOrder)
             {
