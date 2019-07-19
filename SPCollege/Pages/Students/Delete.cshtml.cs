@@ -55,13 +55,22 @@ namespace SPCollege.Pages.Students
 
             Student = await _context.Students.FindAsync(id);
 
-            if (Student != null)
+            if (Student == null)
+            {
+                return NotFound();
+            }
+
+            try
             {
                 _context.Students.Remove(Student);
                 await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
-
-            return RedirectToPage("./Index");
+            catch (DbUpdateException)
+            {
+                return RedirectToAction("./Delete",
+                    new { id = id, saveChangesError = true });
+            }
         }
     }
 }
